@@ -1,9 +1,11 @@
 package controllers;
 
+import models.Comment;
 import models.Post;
 import play.mvc.Result;
 import java.util.List;
 import play.mvc.*;
+import views.html.posts.details;
 import views.html.posts.list;
 
 /**
@@ -11,7 +13,7 @@ import views.html.posts.list;
  */
 public class Posts extends Controller{
 
-    public Result index() {
+    public Result list() {
         List<Post> allPosts = Post.findAll();
         return ok(list.render(allPosts));
     }
@@ -21,7 +23,13 @@ public class Posts extends Controller{
     }
 
     public Result details(String title){
-        return TODO;
+        Post post = Post.findByTitle(title);
+        if(post!=null) {
+            List<Comment> comments = Comment.commentOfPost(post.id);
+            return ok(details.render(post, comments));
+        }else{
+            return ok("404 ! not found ");
+        }
     }
 
     public Result save(){

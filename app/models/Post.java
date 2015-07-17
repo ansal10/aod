@@ -90,5 +90,8 @@ public class Post {
         posts.add(new Post(title, description, category, author));
     }
 
+    public String getShortDescription(){
+        return description.substring(0,120);
+    }
 
 }
