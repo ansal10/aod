@@ -1,4 +1,4 @@
-@(posts : List[Post])
+@(posts: List[Post])
 
 @main2("All Posts"){
     <section class="wrapper">
@@ -47,6 +47,26 @@
                     <div class="rs_box">
 
                         <div class="col-sm-9 col-md-9 col-lg-9"><br>
+
+                            <div id = 'post-comments' class="popover fade left in" style="display: none; max-height: 1000px;  width:100%; max-width: 1000px">
+                                <h3 class="popover-title">Comments</h3>
+                                <div class="popover-content">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label class="col-md-12 control-label"></label>
+                                            <div class="col-md-12">
+                                                <textarea class="form-control field" data-type="textarea" style="min-height: 200px" id="textarea" name="comment" placeholder="Post your opinion"></textarea>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <input type="hidden" id="hidden-text" name="id" value="" />
+                                        <button id="save" class="btn btn-info col-md-4"></button>&nbsp;
+                                        <input type="button" class="btn btn-danger col-md-4" value="Cancel" onclick="$('#post-comments').toggle()">
+                                    </form>
+                                        <!--<button class="btn btn-danger col-md-4" onclick="$('#post-comments').toggle()">Cancel</button>-->
+                                </div>
+                            </div>
+
                             @for(post <- posts){
                                 <div class="blog_single">
                                     <article class="post">
@@ -62,10 +82,28 @@
                                                     <span><i class="fa fa-calendar"></i> <a href="javascript:void(0)">@post.created_on</a> </span>
                                                     <span><i class="fa fa-user"></i> By <a href="javascript:void(0)">@post.author</a> </span>
                                                     <span><i class="fa fa-tag"></i> <a href="javascript:void(0)">@post.category</a> </span>
-                                                    <span><i class="fa fa-comments"></i> <a href="javascript:void(0)">@post.supporters Supporters</a></span>
-                                                    <span><i class="fa fa-comments"></i> <a href="javascript:void(0)">@post.opponents Opponents</a></span>
-                                                    <span><i class="fa fa-thumbs-up"></i> <a href="javascript:void(0)">@post.likes </a></span>
-                                                    <span><i class="fa fa-thumbs-down"></i> <a href="javascript:void(0)">@post.dislikes </a></span>
+                                                    <span><i class="fa fa-comments"></i>
+                                                        <a href="javascript:void(0)" onclick="supporting_comment($(this).parent())">Support</a>
+                                                        (
+                                                        <a href="javascript:void(0)">@post.supporters</a>
+                                                         )
+                                                    </span>
+                                                    <span><i class="fa fa-comments"></i>
+                                                        <a href="javascript:void(0)" onclick="opponent_comment($(this).parent())">Counter</a>
+                                                        (
+                                                        <a href="javascript:void(0)">@post.opponents</a>
+                                                         )
+                                                    </span>
+                                                    <span>
+                                                        <i class="fa fa-thumbs-up" style="color: green"></i>
+                                                        <a href="javascript:void(0)">Like</a> (
+                                                        <a href="javascript:void(0)">@post.likes </a> )
+                                                    </span>
+                                                    <span>
+                                                        <i class="fa fa-thumbs-down"  style="color: red"></i>
+                                                        <a href="javascript:void(0)" title="Click to dislike">Dislike</a> (
+                                                        <a href="javascript:void(0)">@post.dislikes </a> )
+                                                    </span>
                                                 </div>
                                             </div>
                                             <p>

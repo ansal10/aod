@@ -59,4 +59,41 @@ public class Comment {
         }
         return filterComments;
     }
+
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Integer getSupporters() {
+        return supporters;
+    }
+
+    public Integer getOpponents() {
+        return opponents;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public Integer getDislikes() {
+        return dislikes;
+    }
+
+    public Integer getPostId() {
+        return postId;
+    }
+
+    public Integer getCommentId() {
+        return commentId;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public static List<Comment> getComments() {
+        return comments;
+    }
 }

@@ -94,4 +94,44 @@ public class Post {
         return description.substring(0,120);
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public Integer getSupporters() {
+        return supporters;
+    }
+
+    public Integer getOpponents() {
+        return opponents;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public Integer getDislikes() {
+        return dislikes;
+    }
+
+    public Date getCreated_on() {
+        return created_on;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
 }
