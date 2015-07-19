@@ -98,47 +98,41 @@
                             </div>
                         </div>
 
-                        <script>
-                        for(var i=0 ; i < 50 ; i++){
-                        var default_class, default_offset ;
+                        @for(comment <- comments) {
 
-                        if(Math.random()<=.50) {
-                        default_class = "default-supporter";
-                        default_offset = "col-md-offset-0";
+                            <div class='@if(comment.isSupporting){ col-md-offset-0 } else { col-md-offset-2 }  col-md-10'>
+                                <blockquote class="default @if(comment.isSupporting){ default-supporter } else { default-opponent } ">
+                                    <p>
+                                        @comment.getShortComment
+                                        <a href="javascript:void(0)" onclick="$ ( this ).parent ( ).parent ( ).find ( 'p , .metaInfo' ).toggle ( )">View More</a>
+                                    </p>
+                                    <p style="display : none">
+                                        @comment.getComment
+                                        <a href="javascript:void(0)" onclick="$ ( this ).parent ( ).parent ( ).find ( 'p , .metaInfo' ).toggle ( )">View Less</a>
+                                    </p>
+                                    <div class="metaInfo" style=" font-family : 'initial' ">
+                                        <span><i class="fa fa-calendar"></i> <a href="javascript:void(0)">@comment.getCreatedOn</a> </span>
+                                        <span><i class="fa fa-user"></i> By <a href="javascript:void(0)">@comment.getUser</a> </span>
+                                        <span><i class="fa fa-comments"></i>
+                                            <a href="javascript:void(0)" style="color : dodgerblue" onclick="supporting_comment ( $ ( this ).parent ( ) )" >Support</a> (
+                                            <a href="javascript:void(0)" style="color : dodgerblue" >@comment.getSupporters</a> )
+                                        </span>
+                                        <span><i class="fa fa-comments"></i>
+                                            <a href="javascript:void(0)" style="color : dodgerblue" onclick="opponent_comment ( $ ( this ).parent ( ) )">Counter</a> (
+                                            <a href="javascript:void(0)" style="color : dodgerblue" >@comment.getOpponents</a> )
+                                        </span>
+                                        <span><i class="fa fa-thumbs-o-up"></i>
+                                            <a href="javascript:void(0)" style="color : dodgerblue" >Like </a> (
+                                            <a href="javascript:void(0)" >@comment.getLikes </a> )
+                                        </span>
+                                        <span><i class="fa fa-thumbs-o-down"></i>
+                                            <a href="javascript:void(0)" style="color : dodgerblue" >Dislike </a> (
+                                            <a href="javascript:void(0)">@comment.getDislikes </a> )
+                                        </span>
+                                    </div>
+                                </blockquote>
+                            </div>
                         }
-                        else {
-                        default_class = "default-opponent";
-                        default_offset = "col-md-offset-2";
-                        }
-                        document.write("<div class='"+default_offset+" col-md-10'> \
-                                                <blockquote class=\"default "+
-                        default_class
-                        +"\"> \
-                                        <p> \
-                                            Nulla nunc dui, tristique in semper vel, congue sed ligula. Nam dolor ligula, faucibus id sodales in, auctor fringilla libero. .... \
-                                            <a href=\"javascript:void(0)\" onclick=\"$(this).parent().parent().find('p , .metaInfo').toggle()\">View More</a> \
-                                        </p> \
-                                        <p style=\"display: none\"> \
-                                            Nulla nunc dui, tristique in semper vel, congue sed ligula. Nam dolor ligula, faucibus id sodales in, auctor fringilla libero. Pellentesque pellentesque eget tempor tellus. Fusce lacinia tempor malesuada. Ut lacus sapien, placerat a ornare nec, elementum sit amet felis. Maecenas pretium lorem hendrerit eros sagittis fermentum. \
-                                            <a href=\"javascript:void(0)\" onclick=\"$(this).parent().parent().find('p , .metaInfo').toggle()\">View Less</a> \
-                                        </p> \
-                                        <div class=\"metaInfo\" style=\" font-family: 'initial'  \"> \
-                                            <span><i class=\"fa fa-calendar\"></i> <a href=\"javascript:void(0)\">Nov 28, 2014</a> </span> \
-                                            <span><i class=\"fa fa-user\"></i> By <a href=\"javascript:void(0)\">Louis</a> </span> \
-                                            <span><i class=\"fa fa-tag\"></i> <a href=\"javascript:void(0)\">General</a> </span> \
-                                            <span><i class=\"fa fa-comments\"></i> <a href=\"javascript:void(0)\" style=\"color: dodgerblue\" >14 Supporters</a></span> \
-                                            <span><i class=\"fa fa-comments\"></i> <a href=\"javascript:void(0)\" style=\"color: dodgerblue\" >12 Opponents</a></span> \
-                                            <span><i class=\"fa fa-thumbs-up\"></i> <a href=\"javascript:void(0)\" >18 </a></span> \
-                                            <span><i class=\"fa fa-thumbs-down\"></i> <a href=\"javascript:void(0)\">13 </a></span> \
-                                            <span><i class=\"fa fa-thumbs-o-up\"></i> <a href=\"javascript:void(0)\" style=\"color: dodgerblue\" >Like </a></span> \
-                                            <span><i class=\"fa fa-thumbs-o-down\"></i> <a href=\"javascript:void(0)\" style=\"color: dodgerblue\" >Dislike </a></span> \
-                                            <span><i class=\"fa fa-plus-square\"></i> <a href=\"javascript:void(0)\" style=\"color: dodgerblue\"  onclick=\"supporting_comment($(this).parent())\">Support</a></span> \
-                                            <span><i class=\"fa fa-minus-square\"></i> <a href=\"javascript:void(0)\" style=\"color: dodgerblue\" onclick=\"opponent_comment($(this).parent())\">Counter</a></span> \
-                                        </div> \
-                                    </blockquote>\
-                                    </div>");
-                        }
-                        </script>
 
                     </div>
 

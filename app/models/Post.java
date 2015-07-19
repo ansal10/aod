@@ -2,7 +2,10 @@ package models;
 
 import play.data.validation.Constraints;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -80,7 +83,7 @@ public class Post {
     }
     public static Post findByTitle(String title){
         for(Post post : posts){
-            if (post.title.equals(title))
+            if (post.title.toLowerCase().equals(title.toLowerCase()))
                 return post;
         }
         return null;
@@ -126,8 +129,9 @@ public class Post {
         return dislikes;
     }
 
-    public Date getCreated_on() {
-        return created_on;
+    public String getCreated_on() {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yy hh:mm");
+        return dateFormat.format(this.created_on);
     }
 
     public String getAuthor() {
