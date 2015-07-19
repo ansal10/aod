@@ -19,30 +19,37 @@
                                 <div class="post_content">
                                     <div class="post_meta">
                                         <h3 style='font-size: 20px'>
-                                            <a href="#">Why Non veg is considered bad for habit when comparted to authentic food</a>
+                                            <a href="#">@post.getTitle</a>
                                         </h3>
                                         <div class="metaInfo" style="font-weight: bold; font-family: 'Helvetica Neue', Arial, sans-serif ">
-                                            <span><i class="fa fa-calendar"></i> <a href="javascript:void(0)">Nov 28, 2014</a> </span>
-                                            <span><i class="fa fa-user"></i> By <a href="javascript:void(0)">Louis</a> </span>
-                                            <span><i class="fa fa-tag"></i> <a href="javascript:void(0)">General</a> </span>
-                                            <span><i class="fa fa-comments"></i> <a href="javascript:void(0)" style="color: green">14 Supporters</a></span>
-                                            <span><i class="fa fa-comments"></i> <a href="javascript:void(0)" style="color: red">12 Opponents</a></span>
-                                            <span><i class="fa fa-thumbs-up"></i> <a href="javascript:void(0)" style="color: green">18 </a></span>
-                                            <span><i class="fa fa-thumbs-down"></i> <a href="javascript:void(0)"style="color: red">13 </a></span>
-                                            <span><i class="fa fa-thumbs-o-up"></i> <a href="javascript:void(0)" style="color: blue">Like </a></span>
-                                            <span><i class="fa fa-thumbs-o-down"></i> <a href="javascript:void(0)" style="color: blue">Dislike </a></span>
-                                            <span><i class="fa fa-plus-square"></i> <a href="javascript:void(0)" style="color: green" onclick="supporting_comment()">Support</a></span>
-                                            <span><i class="fa fa-minus-square"></i> <a href="javascript:void(0)" style="color: red" onclick="opponent_comment()">Counter</a></span>
-
+                                            <span><i class="fa fa-calendar"></i> <a href="javascript:void(0)">@post.getCreated_on</a> </span>
+                                            <span><i class="fa fa-user"></i> By <a href="javascript:void(0)">@post.getAuthor</a> </span>
+                                            <span><i class="fa fa-tag"></i> <a href="javascript:void(0)">@post.getCategory</a> </span>
+                                            <span><i class="fa fa-comments"></i>
+                                                <a href="javascript:void(0)"  onclick="supporting_comment()">Support</a> (
+                                                <a href="javascript:void(0)" >@post.getSupporters</a> )
+                                            </span>
+                                            <span><i class="fa fa-comments"></i>
+                                                <a href="javascript:void(0)"  onclick="opponent_comment()">Counter</a> (
+                                                <a href="javascript:void(0)" s>@post.getOpponents</a> )
+                                            </span>
+                                            <span>
+                                                <i class="fa fa-thumbs-o-up"></i>
+                                                <a href="javascript:void(0)" >Like </a> (
+                                                <a href="javascript:void(0)" >@post.getLikes</a> )
+                                            </span>
+                                            <span><i class="fa fa-thumbs-o-down"></i>
+                                                <a href="javascript:void(0)" >Dislike </a> (
+                                                <a href="javascript:void(0)" >@post.getDislikes</a> )
+                                            </span>
                                         </div>
                                     </div>
                                     <p>
-                                        The idea about this topic goes here as ...
+                                        @post.getShortDescription
                                         <a href="javascript:void(0)" onclick="$(this).parent().parent().find('p').toggle()">View More</a>
                                     </p>
                                     <p style="display: none; font-family: sans-serif">
-                                        The idea about this topic goes here as good for health is very dangerous , people may find this appealing but not
-                                        as such attractive due to various issues
+                                        @post.getDescription
                                         <a href="javascript:void(0)" onclick="$(this).parent().parent().find('p').toggle()">View Less</a>
                                     </p>
                                 </div>
