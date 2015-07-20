@@ -15,8 +15,7 @@ public class Application extends Controller {
         p.description="hello world";
         p.title="It worked";
         p.save();
-        
-        Post.
+
         return ok(index.render(Json.toJson(p).toString()));
 
     }
