@@ -1,8 +1,5 @@
 package controllers;
 
-import models.Post;
-import play.*;
-import play.libs.Json;
 import play.mvc.*;
 
 import views.html.*;
@@ -11,12 +8,11 @@ import views.html.*;
 public class Application extends Controller {
 
     public Result index() {
-        Post p = new Post();
-        p.description="hello world";
-        p.title="It worked";
-        p.save();
-
-        return ok(index.render(Json.toJson(p).toString()));
+//        Post p = new Post(null,null,null,null);
+//        p.description="hello world";
+//        p.title="It worked";
+//        List<Post> posts = Ebean.createQuery(Post.class).select("id title").findList();
+        return ok(index.render("Good to go "));
 
     }
 
