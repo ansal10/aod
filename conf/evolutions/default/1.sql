@@ -56,6 +56,7 @@ create table post_user (
   is_staff                  boolean,
   created_on                timestamp,
   email                     varchar(255),
+  unique_email              varchar(255),
   password                  varchar(255),
   profile_id                bigint,
   constraint uq_post_user_profile_id unique (profile_id),
