@@ -4,13 +4,15 @@
 
 # Home page
 
-GET        /                          controllers.Application.index()
+GET         /                     controllers.Application.index()
 
-GET        /posts/                    controllers.Posts.list()
-GET        /posts/new                 controllers.Posts.newProduct()
-GET        /posts/:ean                controllers.Posts.details(ean: String)
-POST       /posts/                    controllers.Posts.save()
+GET         /posts/               controllers.Posts.list()
+GET         /posts/new            controllers.Posts.newProduct()
+GET         /posts/:ean           controllers.Posts.details(ean: String)
+POST        /posts/               controllers.Posts.save()
 
+GET         /posts/signup/        controllers.Posts.signup()
+POST        /posts/signup/        controllers.Posts.submitSignup()
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file         controllers.Assets.versioned(path="/public", file: Asset)
