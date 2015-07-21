@@ -1,0 +1,145 @@
+@(post:Post, comments:List[Comment])
+
+@main2(post.title){
+
+    <section class="wrapper">
+
+        <section class="content right_sidebar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-9 col-md-9 col-lg-9">
+                        <div class="blog_single">
+
+                            <article class="post">
+                                <div class="post_date">
+                                    <span class="day">
+                                        <img src='@routes.Assets.versioned("images/acc.png")' height='80px' width='80px'>
+                                    </span>
+                                </div>
+                                <div class="post_content">
+                                    <div class="post_meta">
+                                        <h3 style='font-size: 20px'>
+                                            <a href="#">@post.getTitle</a>
+                                        </h3>
+                                        <div class="metaInfo" style="font-weight: bold; font-family: 'Helvetica Neue', Arial, sans-serif ">
+                                            <span><i class="fa fa-calendar"></i> <a href="javascript:void(0)">@post.getCreated_on</a> </span>
+                                            <span><i class="fa fa-user"></i> By <a href="javascript:void(0)">@post.getAuthor</a> </span>
+                                            <span><i class="fa fa-tag"></i> <a href="javascript:void(0)">@post.getCategory</a> </span>
+                                            <span><i class="fa fa-comments"></i>
+                                                <a href="javascript:void(0)"  onclick="supporting_comment()">Support</a> (
+                                                <a href="javascript:void(0)" >@post.getSupporters</a> )
+                                            </span>
+                                            <span><i class="fa fa-comments"></i>
+                                                <a href="javascript:void(0)"  onclick="opponent_comment()">Counter</a> (
+                                                <a href="javascript:void(0)" s>@post.getOpponents</a> )
+                                            </span>
+                                            <span>
+                                                <i class="fa fa-thumbs-o-up"></i>
+                                                <a href="javascript:void(0)" >Like </a> (
+                                                <a href="javascript:void(0)" >@post.getLikes</a> )
+                                            </span>
+                                            <span><i class="fa fa-thumbs-o-down"></i>
+                                                <a href="javascript:void(0)" >Dislike </a> (
+                                                <a href="javascript:void(0)" >@post.getDislikes</a> )
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        @post.getShortDescription
+                                        <a href="javascript:void(0)" onclick="$(this).parent().parent().find('p').toggle()">View More</a>
+                                    </p>
+                                    <p style="display: none; font-family: sans-serif">
+                                        @post.getDescription
+                                        <a href="javascript:void(0)" onclick="$(this).parent().parent().find('p').toggle()">View Less</a>
+                                    </p>
+                                </div>
+                            </article>
+                        </div>
+                            <!--Action -->
+                        <div class="columns btn-group">
+                            <button class="btn btn-default" type="button" name="refresh" title="Refresh">
+                                <i class="glyphicon glyphicon-refresh icon-refresh"></i>
+                            </button>
+                            <div class="export btn-group">
+                                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" onclick="change_content_holder()">
+                                    <i class="icon-share">Action &nbsp;</i><i class="fa fa-sort-desc"></i>
+                                        <!--<span class="caret"></span>-->
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="javascript:void(0)" onclick="onlyopponents()">Only Opponents Comments</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)" onclick="onlysupporters()">Only Supporters Comments</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)" onclick="allcommments()">All Comments</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div><br>
+
+                        <div id = 'post-comments' class="popover fade left in" style="display: none; max-height: 1000px;  width:100%; max-width: 1000px">
+                            <h3 class="popover-title">Comments</h3>
+                            <div class="popover-content">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label class="col-md-12 control-label"></label>
+                                        <div class="col-md-12">
+                                            <textarea class="form-control field" data-type="textarea" style="min-height: 200px" id="textarea" name="comment" placeholder="Post your opinion"></textarea>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <input type="hidden" id="hidden-text" name="id" value="" />
+                                    <button id="save" class="btn btn-info col-md-4"></button>&nbsp;
+                                    <input type="button" class="btn btn-danger col-md-4" value="Cancel" onclick="$('#post-comments').toggle()">
+                                </form>
+                                    <!--<button class="btn btn-danger col-md-4" onclick="$('#post-comments').toggle()">Cancel</button>-->
+                            </div>
+                        </div>
+
+                        @for(comment <- comments) {
+
+                            <div class='@if(comment.isSupporting){ col-md-offset-0 } else { col-md-offset-2 }  col-md-10'>
+                                <blockquote class="default @if(comment.isSupporting){ default-supporter } else { default-opponent } ">
+                                    <p>
+                                        @comment.getShortComment
+                                        <a href="javascript:void(0)" onclick="$ ( this ).parent ( ).parent ( ).find ( 'p , .metaInfo' ).toggle ( )">View More</a>
+                                    </p>
+                                    <p style="display : none">
+                                        @comment.getComment
+                                        <a href="javascript:void(0)" onclick="$ ( this ).parent ( ).parent ( ).find ( 'p , .metaInfo' ).toggle ( )">View Less</a>
+                                    </p>
+                                    <div class="metaInfo" style=" font-family : 'initial' ">
+                                        <span><i class="fa fa-calendar"></i> <a href="javascript:void(0)">@comment.getCreatedOn</a> </span>
+                                        <span><i class="fa fa-user"></i> By <a href="javascript:void(0)">@comment.getUser</a> </span>
+                                        <span><i class="fa fa-comments"></i>
+                                            <a href="javascript:void(0)" style="color : dodgerblue" onclick="supporting_comment ( $ ( this ).parent ( ) )" >Support</a> (
+                                            <a href="javascript:void(0)" style="color : dodgerblue" >@comment.getSupporters</a> )
+                                        </span>
+                                        <span><i class="fa fa-comments"></i>
+                                            <a href="javascript:void(0)" style="color : dodgerblue" onclick="opponent_comment ( $ ( this ).parent ( ) )">Counter</a> (
+                                            <a href="javascript:void(0)" style="color : dodgerblue" >@comment.getOpponents</a> )
+                                        </span>
+                                        <span><i class="fa fa-thumbs-o-up"></i>
+                                            <a href="javascript:void(0)" style="color : dodgerblue" >Like </a> (
+                                            <a href="javascript:void(0)" >@comment.getLikes </a> )
+                                        </span>
+                                        <span><i class="fa fa-thumbs-o-down"></i>
+                                            <a href="javascript:void(0)" style="color : dodgerblue" >Dislike </a> (
+                                            <a href="javascript:void(0)">@comment.getDislikes </a> )
+                                        </span>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        }
+
+                    </div>
+
+                        <!--Sidebar Widget-->
+                    @blocks.sidebar()
+                </div><!--/.row-->
+            </div> <!--/.container-->
+        </section>
+    </section>
+}

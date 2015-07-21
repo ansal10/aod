@@ -1,0 +1,19 @@
+
+<div id = 'post-comments' class="popover fade left in" style="display: none; max-height: 1000px;  width:100%; max-width: 1000px">
+    <h3 class="popover-title">Comments</h3>
+    <div class="popover-content">
+        <form role="form">
+            <div class="form-group">
+                <label class="col-md-12 control-label"></label>
+                <div class="col-md-12">
+                    <textarea class="form-control field" data-type="textarea" style="min-height: 200px" id="textarea" name="comment" placeholder="Post your opinion"></textarea>
+                </div>
+            </div>
+            <hr>
+            <input type="hidden" id="hidden-text" name="id" value="" />
+            <button id="save" class="btn btn-info col-md-4"></button>&nbsp;
+            <input type="button" class="btn btn-danger col-md-4" value="Cancel" onclick="$('#post-comments').toggle()">
+        </form>
+            <!--<button class="btn btn-danger col-md-4" onclick="$('#post-comments').toggle()">Cancel</button>-->
+    </div>
+</div>
