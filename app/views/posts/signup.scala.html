@@ -26,21 +26,38 @@
                 </div>
 
                     <!-- ERROR MESSEGE -->
-                <div class="alert alert-danger hidden alert-dismissable" id="contactSuccess">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <strong>Error !</strong> Your message has been sent to us.
-                </div>
+
+
+
+                @if(signupForm.hasErrors){
+                    @if(signupForm.errors.size > 0){
+                        @for(( key , value ) <- signupForm.errors){
+
+                            <div class="alert alert-danger alert-dismissable" id="contactSuccess">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <strong>
+                                    @key.toString :
+                                </strong>
+                                    @for(err <- value){
+                                        @err.message.toString
+                                    }
+                            </div>
+
+                        }
+                    }
+                }
+
 
 
 
                  @helper.form(action = routes.Posts.submitSignup() , 'id->"contactForm" ,'novalidate->"novalidate", 'onsubmit->"validateForm()"){
-                     @inputText(signupForm("username"),'class->"form-control",'title->"Enter username here", 'Placeholder->"Your Username")
-                     @inputText(signupForm("email"),'class->"form-control",'title->"Enter E-Mail here", 'Placeholder->"Your E-Mail")
-                     @inputText(signupForm("password"),'class->"form-control",'title->"Enter Password here", 'Placeholder->"Your Password")
-                     @inputText(signupForm("confirmPassword"),'class->"form-control",'title->"Confirm Password here", 'Placeholder->"Confirm Password")
-                     @inputText(signupForm("fName"),'class->"form-control",'title->"Enter First Name here", 'Placeholder->"Your First Name")
-                     @inputText(signupForm("lName"),'class->"form-control",'title->"Enter Last Name here", 'Placeholder->"Your Last Name")
-                     @inputText(signupForm("nickName"),'class->"form-control",'title->"Enter Nick Name here", 'Placeholder->"Your Nick Name/First Name (visible to others)")
+                     @inputText(signupForm("username"),'label->"Username", 'class->"form-control",'title->"Enter username here", 'Placeholder->"Your Username")
+                     @inputText(signupForm("email"),'label->"E-Mail",'class->"form-control",'title->"Enter E-Mail here", 'Placeholder->"Your E-Mail")
+                     @inputText(signupForm("password"),'label->"Password",'class->"form-control",'title->"Enter Password here", 'Placeholder->"Your Password")
+                     @inputText(signupForm("confirmPassword"),'label->"Confirm Password",'class->"form-control",'title->"Confirm Password here", 'Placeholder->"Confirm Password")
+                     @inputText(signupForm("firstName"),'label->"First Name",'class->"form-control",'title->"Enter First Name here", 'Placeholder->"Your First Name")
+                     @inputText(signupForm("lastName"),'label->"Last Name",'class->"form-control",'title->"Enter Last Name here", 'Placeholder->"Your Last Name")
+                     @inputText(signupForm("nickName"),'label->"Nick Name",'class->"form-control",'title->"Enter Nick Name here", 'Placeholder->"Your Nick Name/First Name (visible to others)")
 
 
                     <div class="row">

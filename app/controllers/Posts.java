@@ -18,7 +18,7 @@ import static play.data.Form.form;
  */
 public class Posts extends Controller{
 
-    private Form<SignupForm> signupForm;
+    private static Form<SignupForm> signupForm = form(SignupForm.class);
 
 
     public Result list() {
@@ -45,16 +45,15 @@ public class Posts extends Controller{
     }
 
     public Result signup(){
-        this.signupForm = SignupForm.getSignupForm();
-        return ok(signup.render(this.signupForm));
+        return ok(signup.render(signupForm));
     }
 
     public Result submitSignup(){
 
-        if(this.signupForm.hasErrors()){
-            return redirect(routes.Posts.signup());
+        Form<SignupForm> boundSignupForm = signupForm.bindFromRequest();
+        if(boundSignupForm.hasErrors()){
+            return badRequest(signup.render(boundSignupForm));
         }else{
-            SignupForm signupForm = this.signupForm.bindFromRequest().get();
             return ok("Success");
         }
     }
