@@ -47,19 +47,23 @@ create table post_profile (
   nick_name                 varchar(255),
   profile_pic               varchar(255),
   last_updated_on           varchar(255),
+  user_id                   bigint,
+  constraint uq_post_profile_user_id unique (user_id),
   constraint pk_post_profile primary key (id))
 ;
 
 create table post_user (
   id                        bigserial not null,
   is_superuser              boolean,
-  is_staff                  boolean,
+  is_active                 boolean,
   created_on                timestamp,
+  username                  varchar(255),
   email                     varchar(255),
   unique_email              varchar(255),
   password                  varchar(255),
-  profile_id                bigint,
-  constraint uq_post_user_profile_id unique (profile_id),
+  constraint uq_post_user_username unique (username),
+  constraint uq_post_user_email unique (email),
+  constraint uq_post_user_unique_email unique (unique_email),
   constraint pk_post_user primary key (id))
 ;
 
@@ -75,8 +79,8 @@ alter table post_like add constraint fk_post_like_user_5 foreign key (user_id) r
 create index ix_post_like_user_5 on post_like (user_id);
 alter table post_post add constraint fk_post_post_user_6 foreign key (user_id) references post_user (id);
 create index ix_post_post_user_6 on post_post (user_id);
-alter table post_user add constraint fk_post_user_profile_7 foreign key (profile_id) references post_profile (id);
-create index ix_post_user_profile_7 on post_user (profile_id);
+alter table post_profile add constraint fk_post_profile_user_7 foreign key (user_id) references post_user (id);
+create index ix_post_profile_user_7 on post_profile (user_id);
 
 
 

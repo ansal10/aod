@@ -1,36 +1,48 @@
 package models.posts;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Model;
+import com.avaje.ebeaninternal.server.lib.util.Str;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
+import controllers.posts.forms.SignupForm;
 import org.joda.time.DateTime;
+import play.data.Form;
 import play.data.validation.Constraints;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by amd on 7/21/15.
  */
 @Entity
-public class PostUser {
+public class PostUser extends Model {
+
+    private static final List<String> UNIQUE_EMAIL_NOT_REQUIRED = Arrays.asList("@yahoo.com");
 
     @Id
     public Long id;
 
     public Boolean isSuperuser;
 
-    public Boolean isStaff;
+    public Boolean isActive;
 
     public DateTime createdOn;
 
-    @Constraints.Email
-    @Constraints.Required
+    @Column(unique = true)
+    public String username;
+
+    @Constraints.Email(message = "Email is invalid")
+    @Constraints.Required(message = "Value is required")
+    @Column(unique = true)
     public String email;
 
+    @Column(unique = true)
     public String uniqueEmail;
 
     @Constraints.Required
@@ -45,22 +57,66 @@ public class PostUser {
     @OneToMany(mappedBy = "user")
     public List<PostLike> likes;
 
-    @OneToOne
+    @OneToOne(mappedBy = "user")
     public PostProfile profile;
 
-    public PostUser(Boolean isSuperuser, Boolean isStaff, String email, String uniqueEmail, String password, PostProfile profile) {
+    public PostUser(Boolean isSuperuser, Boolean isActive, String email,  String password, String username) {
         this.isSuperuser = isSuperuser;
-        this.isStaff = isStaff;
+        this.isActive = isActive;
         this.email = email;
-        this.uniqueEmail = uniqueEmail;
+        this.uniqueEmail = email.replace(".","");
         this.password = Hashing.sha256().hashString(password, Charsets.UTF_8).toString();
-        this.profile = profile;
         this.createdOn = new DateTime();
+        this.username = username;
     }
 
+    public static PostUser createUserFromForm(SignupForm signupForm) {
+        return new PostUser(false, true, signupForm.getEmail(), signupForm.getPassword(), signupForm.getUsername());
+    }
+
+    public boolean exist(){
+
+
+        PostUser loginUser;
+        if(isUniqueEmailCheckRequired())
+            loginUser = PostUser.find.where().disjunction().add(Expr.eq("username", this.getUsername()))
+                    .add(Expr.eq("email", this.getEmail()))
+                    .add(Expr.eq("uniqueEmail", this.getUniqueEmail())).findUnique();
+        else
+            loginUser = PostUser.find.where().disjunction().add(Expr.eq("username", this.getUsername()))
+                    .add(Expr.eq("email", this.getEmail())).findUnique();
 
 
 
+        return loginUser != null;
+
+    }
+
+    public static boolean checkLoginByEmail(String email, String password){
+        return PostUser.find.where().eq("email",email)
+                .eq("password", Hashing.sha256().hashString(password, Charsets.UTF_8).toString())
+                .findUnique()!=null;
+
+    }
+    public static boolean checkLoginByUsername(String username, String password){
+        return PostUser.find.where().eq("username",username)
+                .eq("password", Hashing.sha256().hashString(password, Charsets.UTF_8).toString())
+                .findUnique()!=null;
+
+    }
+    public static boolean checkUserLogin(String email, String username , String password){
+        return checkLoginByEmail(email, password) || checkLoginByUsername(username, password);
+    }
+
+    public static Finder<String, PostUser> find = new Finder<String,PostUser>(PostUser.class);
+
+    public boolean isUniqueEmailCheckRequired(){
+        for (String email : UNIQUE_EMAIL_NOT_REQUIRED) {
+            if (this.email.endsWith(email))
+                return false;
+        }
+        return true;
+    }
 
 
 
@@ -91,12 +147,12 @@ public class PostUser {
         this.isSuperuser = isSuperuser;
     }
 
-    public Boolean getIsStaff() {
-        return isStaff;
+    public Boolean getIsActive() {
+        return isActive;
     }
 
-    public void setIsStaff(Boolean isStaff) {
-        this.isStaff = isStaff;
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public DateTime getCreatedOn() {
@@ -162,4 +218,14 @@ public class PostUser {
     public void setProfile(PostProfile profile) {
         this.profile = profile;
     }
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

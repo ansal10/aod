@@ -1,5 +1,8 @@
 package models.posts;
 
+import com.avaje.ebean.Model;
+import controllers.posts.forms.SignupForm;
+import play.data.Form;
 import play.data.validation.Constraints;
 
 import javax.persistence.Entity;
@@ -10,13 +13,13 @@ import javax.persistence.OneToOne;
  * Created by amd on 7/21/15.
  */
 @Entity
-public class PostProfile {
+public class PostProfile extends Model {
 
     @Id
     public Long id;
 
     @Constraints.Required
-    @Constraints.Pattern("[a-zA-Z]+")
+    @Constraints.Pattern(value = "[a-zA-Z]+", message = "Only alphabets and numerals and _ are allowed")
     @Constraints.MinLength(5)
     public String fName;
 
@@ -30,7 +33,7 @@ public class PostProfile {
 
     public String lastUpdatedOn;
 
-    @OneToOne(mappedBy = "profile")
+    @OneToOne
     public PostUser user;
 
     public PostProfile(String fName, String lName, String nickName, String profilePic, PostUser user) {
@@ -41,7 +44,9 @@ public class PostProfile {
         this.user = user;
     }
 
-
+    public static PostProfile createProfileFromForm(SignupForm signupForm, PostUser user) {
+        return new PostProfile(signupForm.getFirstName(), signupForm.getLastName(), signupForm.getNickName(), signupForm.getProfilePicURL(), user);
+    }
 
 
 
@@ -100,4 +105,6 @@ public class PostProfile {
     public void setUser(PostUser user) {
         this.user = user;
     }
+
+
 }

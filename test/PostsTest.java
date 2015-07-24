@@ -41,5 +41,11 @@ public class PostsTest {
         assertTrue(contentAsString(html).contains("Your new application is ready."));
     }
 
-
+    @Test
+    public void replaceAllTest(){
+        String s1 = "anas.a.n.s.a.l.1.0";
+        String s2 = "anasansal10";
+        String s3 = s1.replace(".","");
+        Assert.assertEquals(s2,s3);
+    }
 }

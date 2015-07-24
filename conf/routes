@@ -14,5 +14,8 @@ POST        /posts/               controllers.Posts.save()
 GET         /posts/signup/        controllers.Posts.signup()
 POST        /posts/signup/        controllers.Posts.submitSignup()
 
+GET         /posts/login/         controllers.Posts.login()
+POST        /posts/login/         controllers.Posts.submitLogin()
+
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file         controllers.Assets.versioned(path="/public", file: Asset)

@@ -1,6 +1,7 @@
 package models.posts;
 
 import com.avaje.ebean.LikeType;
+import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
 import play.data.validation.Constraints;
 
@@ -12,7 +13,7 @@ import javax.persistence.ManyToOne;
  * Created by amd on 7/21/15.
  */
 @Entity
-public class PostLike {
+public class PostLike extends Model {
 
     @Id
     public Long id;

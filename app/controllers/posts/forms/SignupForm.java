@@ -9,6 +9,7 @@ import play.data.validation.Constraints;
 public class SignupForm {
 
     @Constraints.Required
+    @Constraints.Pattern(value = "[a-zA-Z0-9_]+", message = "Only alphabets , numbers and _ are allowed")
     public String username;
 
     @Constraints.Required
@@ -18,7 +19,7 @@ public class SignupForm {
     public String confirmPassword;
 
     @Constraints.Required
-    @Constraints.Email
+    @Constraints.Email(message = "Email is not valid")
     public String email;
 
     @Constraints.Required

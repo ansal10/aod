@@ -1,0 +1,95 @@
+@(signupForm: Form[controllers.posts.forms.LoginForm])
+@import views.html.posts.forms.SignupFieldConstructor
+
+@import helper._
+@implicitField = @{ FieldConstructor(SignupFieldConstructor.f) }
+
+@main2("Signup Form"){
+    <section class="wrapper">
+
+
+            <!--End Slider-->
+            <!--start info service-->
+        <section class="info_service">
+
+
+
+
+            <div class="col-lg-offset-2 col-lg-8 col-md-8 col-sm-8">
+                <div class="dividerHeading">
+                    <h4><span>LOGIN HERE</span></h4>
+                </div>
+                    <!-- SUCCESS MESSAGE -->
+                <div class="alert alert-success hidden alert-dismissable" id="contactSuccess">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>Success!</strong> Your message has been sent to us.
+                </div>
+
+                    <!-- ERROR MESSEGE -->
+
+
+
+                @if(signupForm.hasErrors){
+                    @if(signupForm.errors.size > 0){
+                        @for(( key , value ) <- signupForm.errors){
+
+                            <div class="alert alert-danger alert-dismissable" id="contactSuccess">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <strong>
+                                    @key.toString :
+                                </strong>
+                                    @for(err <- value){
+                                        @err.message.toString
+                                    }
+                            </div>
+
+                        }
+                    }
+                }
+
+
+
+
+                 @helper.form(action = routes.Posts.submitLogin() , 'id->"contactForm" ,'novalidate->"novalidate", 'onsubmit->"validateForm()"){
+                     @CSRF.formField
+                     @inputText(signupForm("username"),'label->"Username/Email", 'class->"form-control",'title->"Enter username/email here", 'Placeholder->"Your Username or Email")
+                     @inputText(signupForm("password"),'label->"Password",'class->"form-control",'title->"Enter Password here", 'Placeholder->"Your Password")
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="submit" data-loading-text="Loading..." class="btn btn-default btn-lg" value="Login">
+                            <a class="btn btn-default btn-lg" style="font-size: 14px" href="@routes.Posts.signup()" > New User ? Goto Signup </a>
+                        </div>
+                    </div>
+            }
+            </div>
+
+
+        </section>
+            <!--end info service-->
+
+
+            <!--Start recent work-->
+        <section class="latest_work">
+            <div class="container">
+                <div class="row sub_content">
+                    <div class="carousel-intro">
+
+                    </div>
+                </div>
+            </div>
+        </section>
+            <!--</section>-->
+
+    </section>
+
+}
+
+
+    <script>
+        /* Validate form varibles here */
+        function validateForm(){
+            return true;
+        }
+    </script>
