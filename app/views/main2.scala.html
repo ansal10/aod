@@ -240,6 +240,13 @@
         'autoChange':           true
         });
         });
+
+        $(".alert-dismissable").each( function(){
+            $(this ).delay(6000).fadeTo ("slow", .5, function() {
+                $(this).alert('close');
+                } );
+            }
+        );
         </script>
     </body>
 </html>

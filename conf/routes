@@ -17,5 +17,7 @@ POST        /posts/signup/        controllers.Posts.submitSignup()
 GET         /posts/login/         controllers.Posts.login()
 POST        /posts/login/         controllers.Posts.submitLogin()
 
+GET         /posts/logout/        controllers.Posts.logout()
+
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file         controllers.Assets.versioned(path="/public", file: Asset)

@@ -1,14 +1,15 @@
 package controllers;
 
 import com.avaje.ebean.Ebean;
+import controllers.posts.Secured;
 import controllers.posts.forms.LoginForm;
 import controllers.posts.forms.SignupForm;
 import models.Comment;
 import models.Post;
 import models.posts.PostProfile;
 import models.posts.PostUser;
+import org.joda.time.DateTimeField;
 import play.Logger;
-import play.api.libs.openid.UserInfo;
 import play.data.Form;
 import play.filters.csrf.AddCSRFToken;
 import play.filters.csrf.RequireCSRFCheck;
@@ -16,6 +17,7 @@ import play.mvc.Result;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import play.mvc.*;
 import views.html.posts.details;
@@ -32,8 +34,12 @@ public class Posts extends Controller{
 
     private static Form<SignupForm> signupForm = form(SignupForm.class);
     private static Form<LoginForm> loginForm = form(LoginForm.class);
+    private static final Logger.ALogger logger =  Logger.of("posts");
 
+    @Security.Authenticated(Secured.class)
     public Result list() {
+        String user = request().username();
+        Logger.info(user);
         List<Post> allPosts = Post.findAll();
         return ok(list.render(allPosts));
     }
@@ -82,7 +88,7 @@ public class Posts extends Controller{
                 Ebean.commitTransaction();
                 return ok("User created Successfully");
             }catch (Exception e){
-                Logger.error(Arrays.toString(e.getStackTrace()));
+                logger.error(Arrays.toString(e.getStackTrace()));
                 return badRequest("Error creating User");
             }finally {
                 Ebean.endTransaction();
@@ -103,12 +109,22 @@ public class Posts extends Controller{
         else{
             LoginForm loginForm = boundLoginForm.get();
             if(PostUser.checkUserLogin(loginForm.getUsername(), loginForm.getUsername(), loginForm.getPassword())){
+                logger.info("Logged in User : "+loginForm.getUsername());
                 flash("success", "Login Successfull");
-                return ok(list.render(Post.findAll()));
+                session().clear();
+                session("username",loginForm.getUsername());
+                session("last_logged", String.valueOf(new Date().getTime()));
+                return redirect(routes.Posts.list());
             }else{
                 flash("error", "Credentials not matched ! try Again");
                 return badRequest(login.render(boundLoginForm));
             }
         }
+    }
+
+    public Result logout(){
+        session().clear();
+        flash("success","Logged out successfully");
+        return redirect(routes.Posts.login());
     }
 }
