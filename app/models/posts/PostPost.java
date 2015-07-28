@@ -1,6 +1,7 @@
 package models.posts;
 
 import com.avaje.ebean.Model;
+import models.posts.Enum.Category;
 import org.joda.time.DateTime;
 import play.data.validation.Constraints;
 
@@ -31,6 +32,8 @@ public class PostPost extends Model {
 
     public Long views;
 
+    public Category category;
+
     @OneToMany(mappedBy = "post")
     public List<PostComment> comments;
 
@@ -40,16 +43,18 @@ public class PostPost extends Model {
     @ManyToOne
     public PostUser user;
 
-    public PostPost(String title, String description, Boolean anonymous, PostUser user) {
+    public PostPost(String title, String description, Boolean anonymous, Category category, PostUser user) {
         this.title = title;
         this.description = description;
         this.anonymous = anonymous;
         this.user = user;
+        this.category = category;
         this.createdOn = this.lastUpdatedOn = new DateTime();
         this.views = (long) 0;
     }
 
 
+    public static Finder<String, PostPost> find = new Finder<String,PostPost>(PostPost.class);
 
 
     public Long getId() {

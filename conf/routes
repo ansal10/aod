@@ -8,7 +8,6 @@ GET         /                     controllers.Application.index()
 
 GET         /posts/               controllers.Posts.list()
 GET         /posts/new            controllers.Posts.newProduct()
-GET         /posts/:ean           controllers.Posts.details(ean: String)
 POST        /posts/               controllers.Posts.save()
 
 GET         /posts/signup/        controllers.Posts.signup()
@@ -16,6 +15,12 @@ POST        /posts/signup/        controllers.Posts.submitSignup()
 
 GET         /posts/login/         controllers.Posts.login()
 POST        /posts/login/         controllers.Posts.submitLogin()
+
+GET         /posts/newpost        controllers.Posts.newPost()
+POST        /posts/newpost        controllers.Posts.submitPost()
+
+
+GET         /posts/:ean           controllers.Posts.details(ean: String)
 
 GET         /posts/logout/        controllers.Posts.logout()
 

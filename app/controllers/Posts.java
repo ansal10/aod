@@ -3,9 +3,12 @@ package controllers;
 import com.avaje.ebean.Ebean;
 import controllers.posts.Secured;
 import controllers.posts.forms.LoginForm;
+import controllers.posts.forms.NewPost;
 import controllers.posts.forms.SignupForm;
 import models.Comment;
 import models.Post;
+import models.posts.Enum.Category;
+import models.posts.PostPost;
 import models.posts.PostProfile;
 import models.posts.PostUser;
 import org.joda.time.DateTimeField;
@@ -15,13 +18,12 @@ import play.filters.csrf.AddCSRFToken;
 import play.filters.csrf.RequireCSRFCheck;
 import play.mvc.Result;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 import play.mvc.*;
 import views.html.posts.details;
 import views.html.posts.forms.login;
+import views.html.posts.forms.newpost;
 import views.html.posts.list;
 import views.html.posts.forms.signup;
 
@@ -34,10 +36,16 @@ public class Posts extends Controller{
 
     private static Form<SignupForm> signupForm = form(SignupForm.class);
     private static Form<LoginForm> loginForm = form(LoginForm.class);
+    private static Form<NewPost> newPostForm = form(NewPost.class);
+
     private static final Logger.ALogger logger =  Logger.of("posts");
 
     @Security.Authenticated(Secured.class)
     public Result list() {
+        List<PostPost> posts = PostPost.find.all();
+        for(PostPost p : posts){
+            System.out.println(p.getUser().getProfile().getNickName()+" - > " + p.getCreatedOn());
+        }
         String user = request().username();
         Logger.info(user);
         List<Post> allPosts = Post.findAll();
@@ -121,6 +129,40 @@ public class Posts extends Controller{
             }
         }
     }
+
+    @AddCSRFToken
+    @Security.Authenticated(Secured.class)
+    public Result newPost(){
+        Map<String,String> categories= new LinkedHashMap<String, String>();
+        for(Category cat : Category.values())
+            categories.put(String.valueOf(cat.getEventValue()), cat.toString());
+
+        return ok(newpost.render(newPostForm , categories));
+    }
+
+    @RequireCSRFCheck
+    @Security.Authenticated(Secured.class)
+    public Result submitPost(){
+        Form<NewPost> boundPostForm = newPostForm.bindFromRequest();
+        Map<String,String> categories= new LinkedHashMap<String, String>();
+        for(Category cat : Category.values())
+            categories.put(String.valueOf(cat.getEventValue()), cat.toString());
+
+        String category = categories.getOrDefault(boundPostForm.get().getCategory(),null);
+        if(boundPostForm.hasErrors() || category==null ){
+            return badRequest(newpost.render(boundPostForm, categories));
+        }else{
+            NewPost  postForm = boundPostForm.get();
+            PostUser user = PostUser.find.where().eq("username",session().getOrDefault("username",null)).findUnique();
+            if(user!=null){
+                PostPost post = new PostPost(postForm.getTitle(), postForm.getDescription(), false, Category.valueOf(category),user);
+                post.save();
+            }
+            return ok("success");
+        }
+
+    }
+
 
     public Result logout(){
         session().clear();

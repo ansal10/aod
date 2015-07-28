@@ -36,7 +36,9 @@ create table post_post (
   last_updated_on           timestamp,
   anonymous                 boolean,
   views                     bigint,
+  category                  integer,
   user_id                   bigint,
+  constraint ck_post_post_category check (category in (0,1,2,3,4,5,6,7,8,9)),
   constraint pk_post_post primary key (id))
 ;
 
