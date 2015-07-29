@@ -20,7 +20,7 @@ GET         /posts/newpost        controllers.Posts.newPost()
 POST        /posts/newpost        controllers.Posts.submitPost()
 
 
-GET         /posts/:ean           controllers.Posts.details(ean: String)
+GET         /posts/$postid<[0-9]+>      controllers.Posts.details(postid: Long)
 
 GET         /posts/logout/        controllers.Posts.logout()
 

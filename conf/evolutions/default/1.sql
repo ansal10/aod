@@ -24,7 +24,7 @@ create table post_like (
   comment_id                bigint,
   post_id                   bigint,
   user_id                   bigint,
-  constraint ck_post_like_type check (type in (0,1,2,3,4)),
+  constraint ck_post_like_type check (type in (0,1)),
   constraint pk_post_like primary key (id))
 ;
 

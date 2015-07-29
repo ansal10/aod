@@ -2,10 +2,13 @@ package models.posts;
 
 import com.avaje.ebean.Model;
 import models.posts.Enum.Category;
+import models.posts.Enum.CommentType;
+import models.posts.Enum.LikeType;
 import org.joda.time.DateTime;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -121,10 +124,6 @@ public class PostPost extends Model {
         this.comments = comments;
     }
 
-    public List<PostLike> getLikes() {
-        return likes;
-    }
-
     public void setLikes(List<PostLike> likes) {
         this.likes = likes;
     }
@@ -136,4 +135,63 @@ public class PostPost extends Model {
     public void setUser(PostUser user) {
         this.user = user;
     }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getShortDescription(){
+        return description.substring(0,Math.min(120, description.length()));
+    }
+
+    public String getAuthor(){
+        if(this.anonymous)
+            return "Anonymous";
+        else{
+            return this.getUser().getProfile().getNickName();
+        }
+    }
+
+    public List<PostComment> getSupporters(){
+        List<PostComment> postComments = new ArrayList<>();
+        for(PostComment comm : this.comments){
+            if(comm.getType()== CommentType.SUPPORT)
+                postComments.add(comm);
+        }
+        return postComments;
+    }
+
+    public List<PostComment> getOpponents(){
+        List<PostComment> postComments = new ArrayList<>();
+        for(PostComment comm : this.comments){
+            if(comm.getType()== CommentType.COUNTER)
+                postComments.add(comm);
+        }
+        return postComments;
+    }
+
+    public List<PostLike> getLikes(){
+        List<PostLike> likes = new ArrayList<>();
+        for(PostLike like:this.likes){
+            if(like.getType() == LikeType.LIKE) {
+                likes.add(like);
+            }
+        }
+        return likes;
+    }
+
+    public List<PostLike> getDislikes(){
+        List<PostLike> disLikes = new ArrayList<>();
+        for(PostLike like:this.likes){
+            if(like.getType() == LikeType.DISLIKE) {
+                disLikes.add(like);
+            }
+        }
+        return disLikes;
+    }
+
 }

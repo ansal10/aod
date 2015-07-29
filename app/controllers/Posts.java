@@ -42,13 +42,13 @@ public class Posts extends Controller{
 
     @Security.Authenticated(Secured.class)
     public Result list() {
-        List<PostPost> posts = PostPost.find.all();
-        for(PostPost p : posts){
-            System.out.println(p.getUser().getProfile().getNickName()+" - > " + p.getCreatedOn());
-        }
-        String user = request().username();
-        Logger.info(user);
-        List<Post> allPosts = Post.findAll();
+//        List<PostPost> posts = PostPost.find.all();
+//        for(PostPost p : posts){
+//            System.out.println(p.getUser().getProfile().getNickName()+" - > " + p.getCreatedOn());
+//        }
+//        String user = request().username();
+//        Logger.info(user);
+        List<PostPost> allPosts = PostPost.find.all();
         return ok(list.render(allPosts));
     }
 
@@ -56,13 +56,12 @@ public class Posts extends Controller{
         return TODO;
     }
 
-    public Result details(String title){
-        Post post = Post.findByTitle(title);
+    public Result details(Long postid){
+        PostPost post = PostPost.find.byId(postid.toString());
         if(post!=null) {
-            List<Comment> comments = Comment.commentOfPost(post.id);
-            return ok(details.render(post, comments));
+            return ok(details.render(post));
         }else{
-            return ok("404 ! not found ");
+            return badRequest("404 ! not found ");
         }
     }
 
@@ -148,10 +147,10 @@ public class Posts extends Controller{
         for(Category cat : Category.values())
             categories.put(String.valueOf(cat.getEventValue()), cat.toString());
 
-        String category = categories.getOrDefault(boundPostForm.get().getCategory(),null);
-        if(boundPostForm.hasErrors() || category==null ){
+        if(boundPostForm.hasErrors() || categories.getOrDefault(boundPostForm.get().getCategory(),null)==null ){
             return badRequest(newpost.render(boundPostForm, categories));
         }else{
+            String category = categories.getOrDefault(boundPostForm.get().getCategory(),null);
             NewPost  postForm = boundPostForm.get();
             PostUser user = PostUser.find.where().eq("username",session().getOrDefault("username",null)).findUnique();
             if(user!=null){

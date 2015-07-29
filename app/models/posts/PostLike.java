@@ -1,7 +1,7 @@
 package models.posts;
 
-import com.avaje.ebean.LikeType;
 import com.avaje.ebean.Model;
+import models.posts.Enum.LikeType;
 import org.joda.time.DateTime;
 import play.data.validation.Constraints;
 
